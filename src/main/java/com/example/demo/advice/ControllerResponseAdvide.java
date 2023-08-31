@@ -22,7 +22,8 @@ public class ControllerResponseAdvide implements ResponseBodyAdvice<Object> {
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        if (returnType.getGenericParameterType().equals(String.class)) {
+
+        if(body instanceof String) {
             ObjectMapper objectMapper = new ObjectMapper();
             try {
                 return objectMapper.writeValueAsString(new ResultVO<>(body));
