@@ -8,24 +8,34 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 @RestController
 public class FileServiceController {
     @RequestMapping(value = "/filelook", method = RequestMethod.GET)
-    public ResponseEntity<Object> getFileInfo () throws IOException {
-        File f = new File("src/main/resources/static/hello.txt");
-        Reader in = new FileReader(f);
+    public ResponseEntity<Object> getFileInfo() throws IOException {
         String str = "";
-        for (;;) {
-            int n = in.read(); // 反复调用read()方法，直到返回-1
-            if (n == -1) {
-                break;
+        File f = new File("src/main/resources/static/hello.txt");
+        try(InputStream  in = new FileInputStream(f)) {
+            for (; ; ) {
+                int n = in.read(); // 反复调用read()方法，直到返回-1
+                if (n == -1) {
+                    break;
+                }
+                str += Character.toString(n);
             }
-            str += Character.toString(n);
+            System.out.println(str); // 打印byte的值
         }
-        in.close();
-        System.out.println(str); // 打印byte的值
         return new ResponseEntity<>(str, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "filewrite", method = RequestMethod.POST)
+    public ResponseEntity<Object> writeFile(String content) throws IOException {
+        if (content == null || content.trim().isEmpty()) {
+            return new ResponseEntity<>("请填写内容", HttpStatus.NOT_FOUND);
+        }
+        try (OutputStream output = new FileOutputStream("src/main/resources/static/hello.txt")) {
+            output.write(content.getBytes(StandardCharsets.UTF_8)); // Hello
+        } // 编译器在此自动为我们写入finally并调用close()
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 }
