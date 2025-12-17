@@ -15,4 +15,16 @@ public enum ResultCode implements StatusCode {
         this.code = code;
         this.msg = msg;
     }
+
+	@Override
+	public int getCode() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getMsg() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -21,4 +21,14 @@ public class APIException extends RuntimeException{
         this.code = AppCode.APPERROR.getCode();
         this.msg = AppCode.APPERROR.getMsg();
     }
+
+	public Object getMsg() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object getCode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
