@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Product;
+import com.example.demo.pojo.Result;
 import com.example.demo.service.Impl.ProductServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +20,12 @@ public class ProductController {
     @GetMapping("/productList")
     public ResponseEntity getProduct() {
         Iterable<Product> products = ProductService.productList();
-        return new ResponseEntity(products, HttpStatus.OK);
+        return new ResponseEntity(Result.success(products), HttpStatus.OK);
     }
 
     @RequestMapping(value = "product", method = RequestMethod.POST)
-    public ResponseEntity productCreate(@RequestParam String id, @RequestParam String name) {
-        Iterable<Product> products = ProductService.productCreate(id, name);
-        return new ResponseEntity(products, HttpStatus.OK);
+    public ResponseEntity productCreate(@RequestBody Product product) {
+        Iterable<Product> products = ProductService.productCreate(product.getId(), product.getName());
+        return new ResponseEntity(Result.success(products), HttpStatus.OK);
     }
 }

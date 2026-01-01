@@ -14,18 +14,20 @@ import java.nio.charset.StandardCharsets;
 public class FileUpServiceImpl implements FileUpService {
     @Override
     public String getFileInfo() {
-
         String str = "";
         File f = new File("src/main/resources/static/hello.txt");
         try (InputStream in = new FileInputStream(f)) {
-            for (; ; ) {
-                int n = in.read(); // 反复调用read()方法，直到返回-1
-                if (n == -1) {
-                    break;
-                }
+//            for (; ; ) {
+//                int n = in.read(); // 反复调用read()方法，直到返回-1
+//                if (n == -1) {
+//                    break;
+//                }
+//                str += Character.toString(n);
+//            }
+            int n;
+            while ( (n = in.read()) != -1) {
                 str += Character.toString(n);
             }
-            System.out.println(str); // 打印byte的值
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.pojo.Result;
 import com.example.demo.service.Impl.FileUpServiceImpl;
 
 import org.springframework.http.HttpStatus;
@@ -22,15 +23,15 @@ public class FileUpController {
     }
 
     @RequestMapping(value = "/filelook", method = RequestMethod.GET)
-    public ResponseEntity<Object> getFileInfo() throws IOException {
+    public ResponseEntity<Object> getFileInfo() {
         String str1 = FileUpService.getFileInfo();
-        return new ResponseEntity<>(str1, HttpStatus.OK);
+        return new ResponseEntity<>(Result.success(str1), HttpStatus.OK);
     }
 
     @RequestMapping(value = "filewrite", method = RequestMethod.POST)
     public ResponseEntity<Object> writeFile(String content) throws IOException {
         FileUpService.writeFile(content);
-        return new ResponseEntity<>(content, HttpStatus.OK);
+        return new ResponseEntity<>(Result.success(content), HttpStatus.OK);
     }
 
     @RequestMapping(value = "upload", method = RequestMethod.POST)
