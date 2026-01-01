@@ -1,23 +1,20 @@
-package com.example.demo.controller;
+package com.example.demo.service.Impl;
 
+import com.example.demo.service.FileUpService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
-@RestController
-public class FileServiceController {
-    @RequestMapping(value = "/filelook", method = RequestMethod.GET)
-    public ResponseEntity<Object> getFileInfo() throws IOException {
+@Service
+public class FileUpServiceImpl implements FileUpService {
+    @Override
+    public String getFileInfo() {
+
         String str = "";
         File f = new File("src/main/resources/static/hello.txt");
         try (InputStream in = new FileInputStream(f)) {
@@ -29,23 +26,29 @@ public class FileServiceController {
                 str += Character.toString(n);
             }
             System.out.println(str); // 打印byte的值
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return new ResponseEntity<>(str, HttpStatus.OK);
+        return str;
     }
 
-    @RequestMapping(value = "filewrite", method = RequestMethod.POST)
-    public ResponseEntity<Object> writeFile(String content) throws IOException {
+    @Override
+    public ResponseEntity<String> writeFile(String content) throws FileNotFoundException {
         if (content == null || content.trim().isEmpty()) {
             return new ResponseEntity<>("请填写内容", HttpStatus.NOT_FOUND);
         }
         try (OutputStream output = new FileOutputStream("src/main/resources/static/hello.txt")) {
             output.write(content.getBytes(StandardCharsets.UTF_8)); // Hello
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } // 编译器在此自动为我们写入finally并调用close()
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "upload", method = RequestMethod.POST)
-    public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+    @Override
+    public void uploadFile(MultipartFile file) throws IOException {
         try (InputStream is = file.getInputStream();
              ByteArrayOutputStream os = new ByteArrayOutputStream();) {
             IOUtils.copy(is, os);
@@ -59,8 +62,5 @@ public class FileServiceController {
                 IOUtils.copy(is1, os1);
             }
         }
-        return new ResponseEntity<>("success", HttpStatus.OK);
     }
-
-    ;
 }
