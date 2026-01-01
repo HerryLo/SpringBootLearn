@@ -8,6 +8,6 @@ import java.io.IOException;
 
 public interface FileUpService {
     String getFileInfo();
-    ResponseEntity<String> writeFile(String content)  throws FileNotFoundException;
+    ResponseEntity writeFile(String content)  throws FileNotFoundException;
     void uploadFile(MultipartFile file) throws IOException;
 }

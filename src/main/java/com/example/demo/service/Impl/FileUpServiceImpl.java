@@ -37,7 +37,7 @@ public class FileUpServiceImpl implements FileUpService {
     }
 
     @Override
-    public ResponseEntity<String> writeFile(String content) throws FileNotFoundException {
+    public ResponseEntity writeFile(String content) throws FileNotFoundException {
         if (content == null || content.trim().isEmpty()) {
             return new ResponseEntity<>("请填写内容", HttpStatus.NOT_FOUND);
         }

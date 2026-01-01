@@ -18,7 +18,7 @@ public class ProductController {
     }
 
     @GetMapping("/productList")
-    public ResponseEntity getProduct() {
+    public ResponseEntity<Object> getProduct() {
         Iterable<Product> products = ProductService.productList();
         return new ResponseEntity(Result.success(products), HttpStatus.OK);
     }

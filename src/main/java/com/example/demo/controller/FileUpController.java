@@ -39,6 +39,4 @@ public class FileUpController {
         FileUpService.uploadFile(file);
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
-
-    ;
 }
