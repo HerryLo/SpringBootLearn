@@ -1,5 +1,10 @@
 package com.example.demo.pojo;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Result {
     private int code;
     private String msg;
@@ -23,29 +28,5 @@ public class Result {
 
     public static Result error(String msg) {
         return new Result(0, msg, null);
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
     }
 }

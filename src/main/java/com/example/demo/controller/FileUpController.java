@@ -18,6 +18,7 @@ public class FileUpController {
 
     public FileUpServiceImpl FileUpService;
 
+    // 推荐使用构造注入
     public FileUpController(FileUpServiceImpl FileUpService) {
         this.FileUpService = FileUpService;
     }

@@ -1,8 +1,10 @@
-package com.example.demo.model;
+package com.example.demo.pojo;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class Product {
     private String id;
     private String name;

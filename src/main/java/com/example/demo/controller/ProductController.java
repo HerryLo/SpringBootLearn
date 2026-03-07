@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Product;
+import com.example.demo.pojo.Product;
 import com.example.demo.pojo.Result;
 import com.example.demo.service.Impl.ProductServiceImpl;
 import org.springframework.http.HttpStatus;
