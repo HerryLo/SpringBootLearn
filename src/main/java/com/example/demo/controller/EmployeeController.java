@@ -1,14 +1,21 @@
 package com.example.demo.controller;
 
+import java.lang.System.Logger;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.pojo.Employee;
+import com.example.demo.pojo.PageBean;
+import com.example.demo.pojo.Result;
 import com.example.demo.service.EmployeeService;
 import com.example.demo.service.Impl.EmployeeServiceImpl;
 
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
@@ -19,10 +26,12 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
     
-    // 查询所有
     @GetMapping
-    public List<Employee> list() {
-        return employeeService.list();
+    public Result page(@RequestParam(defaultValue = "1") Integer page, 
+    		@RequestParam(defaultValue = "10") Integer pageSize) {
+    	log.info("分页查询，参数：{},{}",page,pageSize);
+    	PageBean pageBean = employeeService.page(page, pageSize);
+    	return Result.success(pageBean);
     }
     
     // 根据ID查询
