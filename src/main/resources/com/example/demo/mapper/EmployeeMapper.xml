@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.EmployeeMapper">
+    
+    <!-- 结果映射：显式映射所有字段，包括 dept_id -->
+    <resultMap id="employeeMap" type="com.example.demo.pojo.Employee">
+        <id property="id" column="id"/>
+        <result property="empName" column="emp_name"/>
+        <result property="empNo" column="emp_no"/>
+        <result property="gender" column="gender"/>
+        <result property="age" column="age"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="salary" column="salary"/>
+        <result property="jobTitle" column="job_title"/>
+        <result property="entryDate" column="entry_date"/>
+        <result property="status" column="status"/>
+        <!-- 关键：确保 dept_id 被映射 -->
+        <result property="deptId" column="dept_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <!-- 关联部门名称 -->
+        <result property="deptName" column="dept_name"/>
+    </resultMap>
+    
+    <!-- 基础字段SQL：包含 dept_id -->
+    <sql id="baseColumns">
+        e.id, 
+        e.emp_name, 
+        e.emp_no, 
+        e.gender, 
+        e.age, 
+        e.phone, 
+        e.email, 
+        e.salary, 
+        e.job_title, 
+        e.entry_date, 
+        e.status,
+        e.dept_id,        <!-- 确保返回 -->
+        e.create_time, 
+        e.update_time
+    </sql>
+    
+    <!-- 查询所有（带部门名称） -->
+    <select id="selectAll" resultMap="employeeMap">
+        SELECT 
+            <include refid="baseColumns"/>,
+            d.dept_name
+        FROM employee e
+        LEFT JOIN department d ON e.dept_id = d.id
+        WHERE e.status = 1
+        ORDER BY e.id
+    </select>
+    
+    <!-- 根据ID查询 -->
+    <select id="selectById" resultMap="employeeMap">
+        SELECT 
+            <include refid="baseColumns"/>,
+            d.dept_name
+        FROM employee e
+        LEFT JOIN department d ON e.dept_id = d.id
+        WHERE e.id = #{id}
+    </select>
+    
+    <!-- 根据部门ID查询 -->
+    <select id="selectByDeptId" resultMap="employeeMap">
+        SELECT 
+            <include refid="baseColumns"/>,
+            d.dept_name
+        FROM employee e
+        LEFT JOIN department d ON e.dept_id = d.id
+        WHERE e.dept_id = #{deptId} 
+        AND e.status = 1
+        ORDER BY e.id
+    </select>
+    
+    <!-- 模糊查询 -->
+    <select id="search" resultMap="employeeMap">
+        SELECT 
+            <include refid="baseColumns"/>,
+            d.dept_name
+        FROM employee e
+        LEFT JOIN department d ON e.dept_id = d.id
+        WHERE e.status = 1
+        AND (
+            e.emp_name LIKE CONCAT('%', #{keyword}, '%')
+            OR e.emp_no LIKE CONCAT('%', #{keyword}, '%')
+            OR e.job_title LIKE CONCAT('%', #{keyword}, '%')
+        )
+    </select>
+    
+    <!-- 动态条件查询 -->
+    <select id="selectByCondition" resultMap="employeeMap">
+        SELECT 
+            <include refid="baseColumns"/>,
+            d.dept_name
+        FROM employee e
+        LEFT JOIN department d ON e.dept_id = d.id
+        <where>
+            e.status = 1
+            <if test="empName != null and empName != ''">
+                AND e.emp_name LIKE CONCAT('%', #{empName}, '%')
+            </if>
+            <if test="empNo != null and empNo != ''">
+                AND e.emp_no = #{empNo}
+            </if>
+            <!-- 关键：deptId 条件 -->
+            <if test="deptId != null">
+                AND e.dept_id = #{deptId}
+            </if>
+            <if test="gender != null">
+                AND e.gender = #{gender}
+            </if>
+            <if test="jobTitle != null and jobTitle != ''">
+                AND e.job_title = #{jobTitle}
+            </if>
+            <if test="status != null">
+                AND e.status = #{status}
+            </if>
+        </where>
+        ORDER BY e.id
+    </select>
+    
+    <!-- 新增 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO employee (
+            emp_name, 
+            emp_no, 
+            gender, 
+            age, 
+            phone, 
+            email,
+            salary, 
+            job_title, 
+            entry_date, 
+            status, 
+            dept_id,        <!-- 确保插入 -->
+            create_time, 
+            update_time
+        ) VALUES (
+            #{empName}, 
+            #{empNo}, 
+            #{gender}, 
+            #{age}, 
+            #{phone}, 
+            #{email},
+            #{salary}, 
+            #{jobTitle}, 
+            #{entryDate}, 
+            #{status}, 
+            #{deptId},      <!-- 确保插入 -->
+            NOW(), 
+            NOW()
+        )
+    </insert>
+    
+    <!-- 修改（动态更新） -->
+    <update id="update">
+        UPDATE employee
+        <set>
+            update_time = NOW(),
+            <if test="empName != null">emp_name = #{empName},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="salary != null">salary = #{salary},</if>
+            <if test="jobTitle != null">job_title = #{jobTitle},</if>
+            <if test="status != null">status = #{status},</if>
+            <!-- 关键：允许修改 dept_id -->
+            <if test="deptId != null">dept_id = #{deptId}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    
+    <!-- 删除 -->
+    <delete id="deleteById">
+        DELETE FROM employee WHERE id = #{id}
+    </delete>
+    
+    <!-- 批量删除 -->
+    <delete id="deleteByIds">
+        DELETE FROM employee WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <!-- 统计部门人数 -->
+    <select id="countByDeptId" resultType="int">
+        SELECT COUNT(*) FROM employee 
+        WHERE dept_id = #{deptId} 
+        AND status = 1
+    </select>
+    
+</mapper>

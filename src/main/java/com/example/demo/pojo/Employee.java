@@ -11,12 +11,14 @@ public class Employee {
     private Integer age;
     private String email;
     private String phone;
-    private String address;
     private String salary;
     private Integer jobTitle;
     private String entryDate;
     private String status;
+    // 外键关联
     private String deptId;
+    // 非数据库字段：关联部门信息
+    private String deptName;
     private String createTime;
     private String updateTime;
 }
