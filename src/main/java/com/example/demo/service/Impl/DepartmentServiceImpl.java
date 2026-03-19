@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department getById(Integer id) {
+    public Department getById(Long id) {
         // 校验ID
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("部门ID不能为空或小于等于0");
@@ -98,7 +100,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public boolean delete(Integer id) {
+    public boolean delete(Long id) {
         // 校验ID
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("部门ID不能为空或小于等于0");

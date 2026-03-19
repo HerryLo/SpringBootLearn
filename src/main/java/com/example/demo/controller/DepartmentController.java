@@ -16,14 +16,23 @@ public class DepartmentController {
         this.DepartmentService = DepartmentService;
     }
 
+    /**
+     * 查询部门列表
+     * @return
+     */
     @GetMapping
     public Result list() {
         List<Department> departments = DepartmentService.list();
         return Result.success(departments);
     }
 
+    /**
+     * id获取部门信息
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
-    public Result getById(@PathVariable(required = false) Integer id) {
+    public Result getById(@PathVariable(required = false) Long id) {
         if(id == null) {
             return Result.error("错误");
         }
@@ -31,6 +40,11 @@ public class DepartmentController {
         return Result.success(department);
     }
 
+    /**
+     * name获取部门信息
+     * @param name
+     * @return
+     */
     @GetMapping("/search")
     public Result search(@RequestParam(required = false, defaultValue = "") String name) {
         if(name == null) {
@@ -39,19 +53,41 @@ public class DepartmentController {
         return Result.success(DepartmentService.search(name));
     }
 
+    /**
+     * 新增部门信息
+     * @param dept
+     * @return
+     */
     @PostMapping
     public Result save(@RequestBody Department dept) {
-        return Result.success(DepartmentService.save(dept));
+        try {
+            boolean bool = DepartmentService.save(dept);
+            return Result.success(bool);
+
+        }catch (IllegalArgumentException err) {
+            return Result.error(String.valueOf(err.getMessage()));
+        }
     }
 
+    /**
+     * 更新部门信息
+     * @param id
+     * @param dept
+     * @return
+     */
     @PutMapping("/{id}")
-    public Result update(@PathVariable Integer id, @RequestBody Department dept) {
+    public Result update(@PathVariable Long id, @RequestBody Department dept) {
         dept.setId(id);
         return Result.success(DepartmentService.update(dept));
     }
 
+    /**
+     * 删除部门信息
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Integer id) {
+    public Result delete(@PathVariable Long id) {
         return Result.success(DepartmentService.delete(id));
     }
 }

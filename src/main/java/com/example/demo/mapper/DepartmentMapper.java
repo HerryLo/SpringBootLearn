@@ -18,7 +18,7 @@ public interface DepartmentMapper {
     List<Department> selectAll();
 
     // 根据ID查询
-    Department selectById(Integer id);
+    Department selectById(Long id);
 
     // 模糊查询
     List<Department> selectByName(@Param("name") String name);
@@ -30,7 +30,7 @@ public interface DepartmentMapper {
     int update(Department dept);
 
     // 删除
-    int deleteById(Integer id);
+    int deleteById(Long id);
 
     // 精确查询名称（用于判重）
     @Select("SELECT * FROM department WHERE dept_name = #{name}")
@@ -38,5 +38,5 @@ public interface DepartmentMapper {
 
     // 统计部门下员工数量
     @Select("SELECT COUNT(*) FROM employee WHERE dept_id = #{deptId}")
-    int countEmployeeByDeptId(Integer deptId);
+    int countEmployeeByDeptId(Long deptId);
 }

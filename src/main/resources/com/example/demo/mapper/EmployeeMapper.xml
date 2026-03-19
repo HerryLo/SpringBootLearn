@@ -43,19 +43,29 @@
         e.update_time
     </sql>
     
-    <!-- 查询所有（带部门名称） -->
-    <select id="selectAll" resultMap="employeeMap">
+    <!-- 分页查询（姓名、性别、入职时间） -->
+    <select id="list" resultMap="employeeMap">
         SELECT 
             <include refid="baseColumns"/>,
             d.dept_name
         FROM employee e
         LEFT JOIN department d ON e.dept_id = d.id
-        WHERE e.status = 1
+        <where>
+            <if test="empName != null and empName != ''">
+                emp_name LIKE CONCAT('%', #{empName}, '%')
+            </if>
+            <if test="gender != null and gender != ''">
+                AND gender = #{gender}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND entry_date BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
         ORDER BY e.id
     </select>
     
     <!-- 根据ID查询 -->
-    <select id="selectById" resultMap="employeeMap">
+    <select id="getEmployeeById" resultMap="employeeMap">
         SELECT 
             <include refid="baseColumns"/>,
             d.dept_name

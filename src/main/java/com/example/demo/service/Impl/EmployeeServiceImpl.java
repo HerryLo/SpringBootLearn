@@ -9,9 +9,8 @@ import com.github.pagehelper.PageHelper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.util.Collections;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,14 +20,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeMapper employeeMapper;
     
     @Override
-    public PageBean page(Integer page, Integer pageSize) {
+    public PageBean page(Integer page, Integer pageSize, String empName, String gender, LocalDateTime startTime, LocalDateTime endTime) {
     	PageHelper.startPage(page, pageSize);
     	
-        List<Employee> list = employeeMapper.list();
+        List<Employee> list = employeeMapper.list(empName, gender, startTime, endTime);
         Page<Employee> p = (Page<Employee>) list;
         
-        PageBean PageBean = new PageBean(p.getTotal(), p.getResult())
+        PageBean PageBean = new PageBean(p.getTotal(), p.getResult());
         
         return PageBean;
+    }
+
+    @Override
+    public Employee getById(Long id) {
+        return employeeMapper.getEmployeeById(id);
     }
 }

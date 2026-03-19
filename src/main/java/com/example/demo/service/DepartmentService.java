@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface DepartmentService {
     List<Department> list();
-    Department getById(Integer id);
+    Department getById(Long id);
     List<Department> search(String name);
     boolean save(Department dept);
     boolean update(Department dept);
-    boolean delete(Integer id);
+    boolean delete(Long id);
 
 }

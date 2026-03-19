@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Employee {
-    private Integer id;
+    private Long id;
     private String empName;
     private String empNo;
     private String gender;
@@ -12,7 +12,7 @@ public class Employee {
     private String email;
     private String phone;
     private String salary;
-    private Integer jobTitle;
+    private String jobTitle;
     private String entryDate;
     private String status;
     // 外键关联
