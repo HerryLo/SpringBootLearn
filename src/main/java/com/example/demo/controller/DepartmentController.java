@@ -78,7 +78,13 @@ public class DepartmentController {
     @PutMapping("/{id}")
     public Result update(@PathVariable Long id, @RequestBody Department dept) {
         dept.setId(id);
-        return Result.success(DepartmentService.update(dept));
+        try {
+            boolean bool = DepartmentService.update(dept);
+            return Result.success(bool);
+
+        }catch (IllegalArgumentException err) {
+            return Result.error(String.valueOf(err.getMessage()));
+        }
     }
 
     /**
@@ -88,6 +94,12 @@ public class DepartmentController {
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Long id) {
-        return Result.success(DepartmentService.delete(id));
+        try {
+            boolean bool = DepartmentService.delete(id);
+            return Result.success(bool);
+
+        }catch (IllegalArgumentException err) {
+            return Result.error(String.valueOf(err.getMessage()));
+        }
     }
 }
