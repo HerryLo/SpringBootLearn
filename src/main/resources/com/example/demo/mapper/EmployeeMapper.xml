@@ -43,7 +43,7 @@
         e.update_time
     </sql>
     
-    <!-- 分页查询（姓名、性别、入职时间） -->
+    <!-- 分页查询（姓名、性别、入职时间、部门id） -->
     <select id="list" resultMap="employeeMap">
         SELECT 
             <include refid="baseColumns"/>,
@@ -56,6 +56,9 @@
             </if>
             <if test="gender != null and gender != ''">
                 AND gender = #{gender}
+            </if>
+            <if test="deptId != null and deptId != ''">
+                AND dept_id = #{deptId}
             </if>
             <if test="startTime != null and endTime != null">
                 AND entry_date BETWEEN #{startTime} AND #{endTime}
@@ -74,67 +77,8 @@
         WHERE e.id = #{id}
     </select>
     
-    <!-- 根据部门ID查询 -->
-    <select id="selectByDeptId" resultMap="employeeMap">
-        SELECT 
-            <include refid="baseColumns"/>,
-            d.dept_name
-        FROM employee e
-        LEFT JOIN department d ON e.dept_id = d.id
-        WHERE e.dept_id = #{deptId} 
-        AND e.status = 1
-        ORDER BY e.id
-    </select>
-    
-    <!-- 模糊查询 -->
-    <select id="search" resultMap="employeeMap">
-        SELECT 
-            <include refid="baseColumns"/>,
-            d.dept_name
-        FROM employee e
-        LEFT JOIN department d ON e.dept_id = d.id
-        WHERE e.status = 1
-        AND (
-            e.emp_name LIKE CONCAT('%', #{keyword}, '%')
-            OR e.emp_no LIKE CONCAT('%', #{keyword}, '%')
-            OR e.job_title LIKE CONCAT('%', #{keyword}, '%')
-        )
-    </select>
-    
-    <!-- 动态条件查询 -->
-    <select id="selectByCondition" resultMap="employeeMap">
-        SELECT 
-            <include refid="baseColumns"/>,
-            d.dept_name
-        FROM employee e
-        LEFT JOIN department d ON e.dept_id = d.id
-        <where>
-            e.status = 1
-            <if test="empName != null and empName != ''">
-                AND e.emp_name LIKE CONCAT('%', #{empName}, '%')
-            </if>
-            <if test="empNo != null and empNo != ''">
-                AND e.emp_no = #{empNo}
-            </if>
-            <!-- 关键：deptId 条件 -->
-            <if test="deptId != null">
-                AND e.dept_id = #{deptId}
-            </if>
-            <if test="gender != null">
-                AND e.gender = #{gender}
-            </if>
-            <if test="jobTitle != null and jobTitle != ''">
-                AND e.job_title = #{jobTitle}
-            </if>
-            <if test="status != null">
-                AND e.status = #{status}
-            </if>
-        </where>
-        ORDER BY e.id
-    </select>
-    
     <!-- 新增 -->
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO employee (
             emp_name, 
             emp_no, 
@@ -186,7 +130,7 @@
     </update>
     
     <!-- 删除 -->
-    <delete id="deleteById">
+    <delete id="delete">
         DELETE FROM employee WHERE id = #{id}
     </delete>
     
