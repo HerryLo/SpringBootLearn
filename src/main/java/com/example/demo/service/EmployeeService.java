@@ -16,4 +16,6 @@ public interface EmployeeService {
 	boolean update(Employee employee);
 
 	boolean delete(Long id);
+
+	Employee login(Employee employee);
 }

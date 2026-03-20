@@ -54,4 +54,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public boolean delete(Long id) {
         return employeeMapper.delete(id) > 0;
     }
+
+    @Override
+    public Employee login(Employee employee) {
+        return employeeMapper.getByEmpNoAndPassword(employee.getEmpNo(), employee.getPassword());
+    }
 }

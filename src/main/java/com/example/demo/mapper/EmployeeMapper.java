@@ -51,4 +51,12 @@ public interface EmployeeMapper {
 	 */
 	@Select("SELECT COUNT(*) FROM employee WHERE emp_no = #{empNo}")
 	int countByEmpNo(String empNo);
+
+	/**
+	 * 员工登录
+	 * @param empNo
+	 * @return
+	 */
+	@Select("SELECT * FROM employee WHERE emp_no = #{empNo} and password = #{password}")
+	public Employee getByEmpNoAndPassword(String empNo, String password);
 }

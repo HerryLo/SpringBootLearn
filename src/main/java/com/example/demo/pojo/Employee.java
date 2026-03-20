@@ -14,6 +14,8 @@ public class Employee {
     @Size(min = 2, max = 20, message = "姓名长度必须在2-20之间")
     private String empName;
 
+    private String password;
+
     @NotBlank(message = "员工编号不能为空")
     @Pattern(regexp = "^EMP\\d{5}$", message = "编号格式必须为 EMP+5位数字")
     private String empNo;

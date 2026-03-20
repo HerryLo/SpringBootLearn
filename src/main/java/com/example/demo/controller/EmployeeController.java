@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/api/employees", produces = "application/json")
 public class EmployeeController {
     
-    private final EmployeeService employeeService;
+    private EmployeeService employeeService;
 
     public EmployeeController(EmployeeServiceImpl employeeService) {
         this.employeeService = employeeService;
