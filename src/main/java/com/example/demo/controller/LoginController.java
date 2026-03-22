@@ -20,7 +20,7 @@ public class LoginController {
         this.employeeService = employeeService;
     }
 
-    @PostMapping("/api/login")
+    @PostMapping("/login")
     public Result login(@RequestBody Employee employee){
         Employee emp = employeeService.login(employee);
 
