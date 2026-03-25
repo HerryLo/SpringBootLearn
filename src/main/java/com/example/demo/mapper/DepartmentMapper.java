@@ -2,9 +2,11 @@ package com.example.demo.mapper;
 
 import com.example.demo.pojo.Department;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 @Mapper
 public interface DepartmentMapper {
     // 查询所有

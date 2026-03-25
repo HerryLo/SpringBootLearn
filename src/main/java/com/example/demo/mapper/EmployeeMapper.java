@@ -6,7 +6,9 @@ import java.util.*;
 import org.apache.ibatis.annotations.*;
 
 import com.example.demo.pojo.Employee;
+import org.springframework.stereotype.Repository;
 
+@Repository
 @Mapper
 public interface EmployeeMapper {
 
