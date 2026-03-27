@@ -1,6 +1,7 @@
 package com.example.demo.pojo;
 
 import lombok.Data;
+import org.springframework.context.annotation.Bean;
 
 @Data
 public class Department {

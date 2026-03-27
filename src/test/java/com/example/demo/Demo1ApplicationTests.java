@@ -1,17 +1,21 @@
 package com.example.demo;
 
+import com.example.demo.pojo.Department;
+import com.example.demo.utils.TestAutowired;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-//@SpringBootTest
+@SpringBootTest
 class Demo1ApplicationTests {
 
     @Test
@@ -49,5 +53,13 @@ class Demo1ApplicationTests {
                 .parseClaimsJws("eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoidGVzdDMiLCJpZCI6MSwiZXhwIjoxNzczOTc1ODc0fQ.EjsEyhCSrb9NSg2k0yjXXL5hY2G_bH2DLSj6OInzi18")
                 .getBody();
         System.out.println(claims);
+    }
+
+    @Autowired
+    TestAutowired testAutowired;
+
+    @Test
+    public void testAutowired() {
+        testAutowired.print();
     }
 }
